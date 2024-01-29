@@ -17,7 +17,7 @@ First, we need to prepare the host where we will be configuring the virtual test
         If the server was upgraded from Ubuntu 18.04, check the default python version using command `python --version`. If the default python version is still 2.x, replace it with python3 using symbolic link:
         ```
         sudo ln -sf /usr/bin/python3 /usr/bin/python
-        sudo pip install j2cli
+        sudo pip install j2cli==0.3.10
         ```
    2. Option : If your host is **Ubuntu 18.04**
         ```
