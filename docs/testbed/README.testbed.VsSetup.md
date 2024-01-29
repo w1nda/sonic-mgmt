@@ -318,7 +318,7 @@ Once the topology has been created, we need to give the DUT an initial configura
 Verify the DUT is created successfully
 In your host run
 ```
-~$ virsh list
+~$ sudo virsh list
  Id   Name      State
 -------------------------
  3    vlab-01   running
