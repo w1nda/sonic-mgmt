@@ -25,6 +25,7 @@ First, we need to prepare the host where we will be configuring the virtual test
         # v0.3.10 Jinja2 is required, lower version may cause uncompatible issue
         sudo pip install j2cli==0.3.10
         ```
+**Note**: *If command j2 doesn't work after installation, make sure j2 under any path of $PATH, you can get the location of j2 by command: `pip show j2cli`.*
 
 3. Run the host setup script to install required packages and initialize the management bridge network
 
