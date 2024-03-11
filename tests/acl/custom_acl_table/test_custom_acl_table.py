@@ -53,6 +53,24 @@ def clear_acl_counter(dut):
     dut.shell('aclshow -c')
 
 
+"""
+If only filter rules by rule name, command will return rules from diferent table.
+
+x@x:~$ aclshow -a -r RULE_101
+RULE NAME    TABLE NAME               PRIO    PACKETS COUNT    BYTES COUNT
+-----------  ---------------------  ------  ---------------  -------------
+RULE_101     TABLE1                   9899                0              0
+RULE_101     TABLE2                   9899                0              0
+RULE_101     TABLE3                   9899                0              0
+
+Should specific table name
+
+x@x:~$ aclshow -a -r RULE_101 -t TABLE1
+RULE NAME    TABLE NAME            PRIO    PACKETS COUNT    BYTES COUNT
+-----------  ------------------  ------  ---------------  -------------
+RULE_101     TABLE1                9899                0              0
+
+"""
 def read_acl_counter(dut, rule_name):
     """
     Read the counter of given rule
