@@ -211,10 +211,13 @@ def compare_routes(running_routes, expected_routes):
             continue
         except_nhs = [nh['ip'] for nh in attr[0]['nexthops']]
         running_nhs = [nh['ip'] for nh in running_routes[prefix][0]['nexthops'] if "active" in nh and nh["active"]]
+        inactive_nhs = [nh['ip'] for nh in running_routes[prefix][0]['nexthops'] if "active" in nh and not nh["active"]]
         if except_nhs != running_nhs:
             is_same = False
             diff_cnt += 1
-            nh_diff_prefixes.append((prefix, except_nhs, running_nhs))
+            nh_diff_prefixes.append(
+                (prefix, except_nhs, running_nhs, inactive_nhs, set(except_nhs) - set(running_nhs), set(running_nhs) - set(except_nhs))
+            )
 
     if len(expected_routes) != len(running_routes):
         is_same = False
@@ -228,8 +231,9 @@ def compare_routes(running_routes, expected_routes):
     if missing_prefixes:
         logger.info("Prefixes missing in running_routes: %s", missing_prefixes)
     if nh_diff_prefixes:
-        for prefix, expected, running in nh_diff_prefixes:
-            logger.info("Prefix %s nexthops not match, expected: %s, running: %s", prefix, expected, running)
+        for prefix, expected, running, inactive, absence, unexpected in nh_diff_prefixes:
+            logger.info("Prefix %s nexthops not match, expected: %s, running: %s, inactive: %s, absence in running: %s, unexpected in running: %s",
+                        prefix, expected, running, inactive, absence, unexpected)
 
     logger.info("%d of %d routes are different", diff_cnt, len(expected_routes))
     return is_same
