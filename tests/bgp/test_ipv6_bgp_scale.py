@@ -138,11 +138,13 @@ def announce_routes(localhost, tbinfo, ptf_ip, dut_interfaces):
     )
 
 
-def get_all_bgp_ipv6_routes(duthost):
+def get_all_bgp_ipv6_routes(duthost, save_snapshot=False):
     logger.info("Getting ipv6 routes")
-    return json.loads(
-        duthost.shell("docker exec bgp vtysh -c 'show ipv6 route bgp json'")['stdout']
-    )
+    routes_str = duthost.shell("docker exec bgp vtysh -c 'show ipv6 route bgp json'")['stdout']
+    if save_snapshot:
+        with open("/tmp/bgp_ipv6_routes_" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + '.json', "w") as f:
+            f.write(routes_str)
+    return json.loads(routes_str)
 
 
 def generate_packets(prefixes, dut_mac, src_mac):
